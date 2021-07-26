@@ -27,16 +27,17 @@ print(name, hash)
 # checking if the file exist
 file_exist = f"SELECT file_id from files WHERE file_hash = '{hash}'"
 mycursor.execute(file_exist)
+
+old_file = mycursor.fetchone()
 file_id = mycursor.fetchall()
 
-if file_id == None:
+if old_file == None:
     print("File don't exist in database. I'll add it.")
     create_file = f"INSERT INTO files (file_name, file_hash, date_add) VALUES ('{name}', '{hash}', '{today}')"
     mycursor.execute(create_file)
 else:
-    print("File already added with id:", file_id[0][0])
-    file_id = file_id[0][0]
-    print(file_id)
+    print("File already added with id:", file_id)
+    # file_id = file_id[0][0]
 
 
 # TODO Get file_id from table with hash
@@ -50,7 +51,7 @@ with open(input, 'r') as f:
         mail = i.group(1)
         password = i.group(2)
 
-        add_to_db = f'INSERT IGNORE INTO combo_valid (email, password, date_checked) VALUES ("{mail}", "{password}", "{today}")'
+        add_to_db = f'INSERT IGNORE INTO combo_valid (email, password, date_checked, file_id) VALUES ("{mail}", "{password}", "{today}", {file_id})'
         mycursor.execute(add_to_db)
         print(mail, password)
 
