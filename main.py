@@ -10,7 +10,7 @@ mydb = pymysql.connect(host="localhost",
 
 mycursor = mydb.cursor() #cursor created
 
-regexp = re.compile("([\w]+@[^:\n]*\.[^:\n]*):(.*)( \| .*)?\n?", )
+regexp = re.compile("([\w\.-]+@[^:\n]*\.[^:\n]*):(.*)( \| .*)?\n?", )
 input = input('File with combo:\n')
 today = time.strftime("%Y-%m-%d")
 
@@ -41,7 +41,7 @@ else:
     # file_id = file_id[0][0]
 
 mycursor.execute(file_exist)
-file_id = mycursor.fetchone()
+file_id = mycursor.fetchone()[0]
 
 # TODO Get file_id from table with hash
 
@@ -54,7 +54,7 @@ with open(input, 'r') as f:
         mail = i.group(1)
         password = i.group(2)
 
-        add_to_db = 'INSERT IGNORE INTO combo_valid (email, password, date_checked) VALUES ("%s", "%s", "%s")' % (mail, password, today)
+        add_to_db = 'INSERT IGNORE INTO combo_valid (email, password, date_checked, file_id) VALUES ("%s", "%s", "%s", "%s")' % (mail, password, today, file_id)
         mycursor.execute(add_to_db)
         print(mail, password)
 
