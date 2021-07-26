@@ -30,6 +30,7 @@ mycursor.execute(file_exist)
 
 old_file = mycursor.fetchone()
 file_id = mycursor.fetchall()
+print("old_file:", old_file, "file_id:", file_id)
 
 if old_file == None:
     print("File don't exist in database. I'll add it.")
@@ -38,6 +39,9 @@ if old_file == None:
 else:
     print("File already added with id:", file_id)
     # file_id = file_id[0][0]
+
+mycursor.execute(file_exist)
+file_id = mycursor.fetchone()
 
 
 # TODO Get file_id from table with hash
