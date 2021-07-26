@@ -27,13 +27,21 @@ print(name, hash)
 # checking if the file exist
 file_exist = f"SELECT file_id from files WHERE file_hash = '{hash}'"
 mycursor.execute(file_exist)
+
 file_id = mycursor.fetchone()
+# file_id = mycursor.fetchall()
+# print("old_file:", old_file, "file_id:", file_id)
+
 if file_id == None:
     print("File don't exist in database. I'll add it.")
     create_file = f"INSERT INTO files (file_name, file_hash, date_add) VALUES ('{name}', '{hash}', '{today}')"
     mycursor.execute(create_file)
 else:
-    print("File already added with id:", file_exist)
+    print("File already added with id:", file_id)
+    # file_id = file_id[0][0]
+
+mycursor.execute(file_exist)
+file_id = mycursor.fetchone()
 
 # TODO Get file_id from table with hash
 
@@ -56,6 +64,7 @@ mydb.close()
 
 
 
+print(file_id)
 
 
 """ All my queries
